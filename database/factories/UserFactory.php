@@ -18,7 +18,7 @@ class UserFactory extends Factory
     {
         return [
             'user_email' => fake()->email(),
-            'password' => md5('Password')
+            'password' => bcrypt('Password')
         ];
     }
 }
