@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use App\Models\User;
 use App\Services\Operations;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
@@ -66,6 +66,56 @@ class MainController extends Controller
       if ($id === null) {
          return redirect()->route('home');
       }
+
+      // load note
+      $note = Note::find($id);
+
+      // show edit note view
+      return view('edit_note', ['note' => $note]);
+   }
+
+   public function editNoteSubmit(Request $request)
+   {
+      // validate request
+      $request->validate(
+         // rules
+         [
+            'text_title' => 'required|min:3|max:200',
+            'text_note' => 'required|min:3|max:3000'
+         ],
+         // error messages
+         [
+            'text_title.required' => 'O título deve ser preenchido',
+            'text_title.min' => 'O título deve ter pelo menos :min caracteres',
+            'text_title.max' => 'O título deve ter no máximo :max caracteres',
+            'text_note.required' => 'A nota deve ser preenchida',
+            'text_note.min' => 'A nota deve ter pelo menos :min caracteres',
+            'text_note.max' => 'A nota deve ter no máximo :max caracteres'
+         ]
+      );
+
+      // check if note_id exists
+      if ($request->note_id == null) {
+         return redirect()->route('home');
+      }
+
+      // decrypt note_id
+      $id = Operations::decryptId($request->note_id);
+
+      if ($id === null) {
+         return redirect()->route('home');
+      }
+
+      // load the note
+      $note = Note::find($id);
+
+      // update note
+      $note->title = $request->text_title;
+      $note->text = $request->text_note;
+      $note->save();
+
+      // redirect to home
+      return redirect()->route('home');
    }
 
    public function deleteNote($id)

@@ -4,14 +4,18 @@
             <div class="row">
                 <div class="col">
                     <h4 class="text-info">{{ $note['title'] }}</h4>
-                    <small class="text-secondary"><span class="opacity-75 me-2">Criada em: </span><strong>
-                            {{ date('Y-m-d H:i:s', strtotime($note['created_at'])) }}</strong></small>
+                    <small class="text-secondary"><span class="opacity-75 me-2">Criada em:
+                        </span><strong>{{ date('Y-m-d H:i:s', strtotime($note['created_at'])) }}</strong></small>
+                    @if ($note['updated_at'] != $note['created_at'])
+                        <small class="text-secondary ms-4"><span class="opacity-75 me-2">Atualizada em:
+                            </span><strong>{{ date('Y-m-d H:i:s', strtotime($note['updated_at'])) }}</strong></small>
+                    @endif
                 </div>
                 <div class="col text-end">
-                    <a href="{{ route('editNote', ['id' => Crypt::encrypt($note['id'])])}}" class="btn btn-outline-secondary btn-sm mx-1"><i
-                            class="fa-regular fa-pen-to-square"></i></a>
-                    <a href="{{ route('deleteNote', ['id' => Crypt::encrypt($note['id'])]) }}" class="btn btn-outline-danger btn-sm mx-1"><i
-                            class="fa-regular fa-trash-can"></i></a>
+                    <a href="{{ route('editNote', ['id' => Crypt::encrypt($note['id'])]) }}"
+                        class="btn btn-outline-secondary btn-sm mx-1"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <a href="{{ route('deleteNote', ['id' => Crypt::encrypt($note['id'])]) }}"
+                        class="btn btn-outline-danger btn-sm mx-1"><i class="fa-regular fa-trash-can"></i></a>
                 </div>
             </div>
             <hr>
