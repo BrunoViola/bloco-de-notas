@@ -63,7 +63,8 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    public function logout() {
+    public function logout()
+    {
         session()->forget('user');
 
         return redirect()->to('/login');
